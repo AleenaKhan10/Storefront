@@ -4,10 +4,16 @@ from django.db import models
 class Promotion(models.Model):
     description = models.CharField(max_length=225)
     discount = models.FloatField()
+    
+    def __str__(self):
+        return self.description
 
 class Collection(models.Model):
     title = models.CharField(max_length=225)
     featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
+    
+    def __str__(self):
+        return self.title
     
     
 class Product(models.Model):
@@ -19,6 +25,9 @@ class Product(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
     promotion = models.ManyToManyField(Promotion)
+    
+    def __str__(self):
+        return self.title
     
     
 class Customer(models.Model):
@@ -38,6 +47,9 @@ class Customer(models.Model):
     birth_date = models.DateField(null=True)
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
     
+    def __str__(self):
+        return self.first_name
+    
 class Order(models.Model):
     PAYMENT_STATUS_PENDING = 'P'
     PAYMENT_STATUS_COMPLETE = 'C'
@@ -52,11 +64,17 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     
+    def __str__(self):
+        return self.placed_at
+    
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantit = models.PositiveSmallIntegerField()
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+    
+    def __str__(self):
+        return self.product
     
 
 class Address(models.Model):
@@ -64,10 +82,19 @@ class Address(models.Model):
     city = models.CharField(max_length=225)
     customer = models.ForeignKey(Customer,  on_delete=models.CASCADE)
     
+    def __str__(self):
+        return self.street
+    
 class Cart(models.Model):
     created_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.created_at
     
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField()
+    
+    def __str__(self):
+        return self.product
