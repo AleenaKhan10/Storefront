@@ -65,7 +65,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     
     def __str__(self):
-        return self.placed_at
+        return self.placed_at.strftime('%Y-%m-%d %H:%M:%S')
     
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
@@ -74,7 +74,7 @@ class OrderItem(models.Model):
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
     
     def __str__(self):
-        return self.product
+        return f'{self.product.title}'
     
 
 class Address(models.Model):
@@ -89,7 +89,7 @@ class Cart(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return self.created_at
+        return self.created_at.strftime("%Y-%m-%d %H:%M:%S")
     
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
@@ -97,4 +97,4 @@ class CartItem(models.Model):
     quantity = models.PositiveSmallIntegerField()
     
     def __str__(self):
-        return self.product
+        return f"{self.product.title} - Quantity: {self.quantity}"
