@@ -7,6 +7,9 @@ name = "pypi"
 django = "*"
 django-debug-toolbar = "*"
 mysqlclient = "*"
+django-seed = "*"
+psycopg = "*"
+psycopg2 = "*"
 
 [dev-packages]
 
